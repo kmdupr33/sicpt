@@ -1,0 +1,2 @@
+(load "{{.TestsFile}}")
+(load "{{.DepsFile}}")
