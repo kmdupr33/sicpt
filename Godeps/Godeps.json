@@ -1,0 +1,12 @@
+{
+	"ImportPath": "github.com/kmdupr33/sicpt",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v62",
+	"Deps": [
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.2.0-237-g71f57d3",
+			"Rev": "71f57d300dd6a780ac1856c005c4b518cfd498ec"
+		}
+	]
+}
