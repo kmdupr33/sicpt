@@ -10,7 +10,10 @@ import (
 )
 
 func TestGenerateFiles(t *testing.T) {
-	os.Remove("1.1.6")
+	err := os.RemoveAll("1.1.6")
+	if err != nil {
+		t.Log(err)
+	}
 
 	generateFiles("1.1.6.1-5")
 

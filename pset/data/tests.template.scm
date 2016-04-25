@@ -1,6 +1,7 @@
 (load "testing.scm")
 
 
+
 {{range .Problems}}
-(define (test-{{.}}))
+(define (test-exercise-{{.Chapter}}-{{.Number}}))
 {{end}}
