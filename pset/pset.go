@@ -33,10 +33,18 @@ func generateFiles(psetSpec string) error {
 	testsFileName := sectionId + "-tests.scm"
 	depsFileName := sectionId + "-deps.scm"
 
+	chapter := strings.Split(sectionId, ".")[0]
+	problemRange := strings.Split(specParts[3], "-")
+	problems, err := makeProblemSlice(chapter, problemRange)
+	if err != nil {
+		return err
+	}
+
 	err = createExercisesFile(sectionId,
 		exercisesFileName,
 		testsFileName,
-		depsFileName)
+		depsFileName,
+		problems)
 
 	if err != nil {
 		return err
@@ -47,8 +55,7 @@ func generateFiles(psetSpec string) error {
 		return err
 	}
 
-	problemRange := strings.Split(specParts[3], "-")
-	err = createTestsFile(sectionId, testsFileName, problemRange)
+	err = createTestsFile(sectionId, testsFileName, problems)
 	if err != nil {
 		return err
 	}
@@ -56,13 +63,7 @@ func generateFiles(psetSpec string) error {
 	return nil
 }
 
-func createTestsFile(sectionId, testsFileName string, problemRange []string) error {
-
-	chapter := strings.Split(sectionId, ".")[0]
-	problems, err := makeProblemSlice(chapter, problemRange)
-	if err != nil {
-		return err
-	}
+func createTestsFile(sectionId, testsFileName string, problems []Problem) error {
 
 	bytes, err := dataTestsTemplateScmBytes()
 	if err != nil {
@@ -94,7 +95,7 @@ func createTestsFile(sectionId, testsFileName string, problemRange []string) err
 	return nil
 }
 
-func createExercisesFile(sectionId, exercisesFileName, testsFileName, depsFileName string) error {
+func createExercisesFile(sectionId, exercisesFileName, testsFileName, depsFileName string, problems []Problem) error {
 	exercisesTemplate, err := dataExercisesTemplateScmBytes()
 	if err != nil {
 		return err
@@ -110,9 +111,11 @@ func createExercisesFile(sectionId, exercisesFileName, testsFileName, depsFileNa
 	}
 
 	dot := struct {
+		Problems  []Problem
 		TestsFile string
 		DepsFile  string
 	}{
+		Problems:  problems,
 		TestsFile: filepath.Join(sectionId, testsFileName),
 		DepsFile:  filepath.Join(sectionId, depsFileName),
 	}
